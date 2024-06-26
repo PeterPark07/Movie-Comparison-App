@@ -83,7 +83,7 @@ def get_movie_info(movie_id):
 def discover_movies_by_genre(genre_id):
     url = f'{BASE_URL}/discover/movie'
     params = {
-        'api_key': API_KEY,
+        'api_key': TMDB_API_KEY,
         'language': 'en-US',
         'sort_by': 'popularity.desc',
         'include_adult': 'true',
