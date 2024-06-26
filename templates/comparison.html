@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compare Movies</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
         .movie-container {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            margin-top: 50px;
+            margin-top: 20px;
         }
         .movie {
             text-align: center;
@@ -23,6 +26,19 @@
             display: flex;
             justify-content: center;
             margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .skip-button-container button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .skip-button-container button:hover {
+            background-color: #0056b3;
         }
     </style>
     <script>
@@ -33,6 +49,11 @@
 </head>
 <body>
     <h1>Which Movie Do You Prefer?</h1>
+    <div class="skip-button-container">
+        <form action="{{ url_for('skip') }}" method="post">
+            <button type="submit">Haven't Watched It</button>
+        </form>
+    </div>
     <div class="movie-container">
         <div class="movie">
             <h2>{{ movie1.title }}</h2>
@@ -50,11 +71,6 @@
                 <input type="hidden" name="winner_title" value="{{ movie2.title }}">
             </form>
         </div>
-    </div>
-    <div class="skip-button-container">
-        <form action="{{ url_for('skip') }}" method="post">
-            <button type="submit">Haven't Watched Either</button>
-        </form>
     </div>
 </body>
 </html>
