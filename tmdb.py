@@ -55,8 +55,27 @@ def get_movie_info(movie_id):
     }
     return movie_info
 
-def get_random_movies(num_movies=2):
-    popular_movies = get_popular_movies()
-    movies = popular_movies['results']
+def discover_movies_by_genre(genre_id):
+    url = f'{BASE_URL}/discover/movie'
+    params = {
+        'api_key': API_KEY,
+        'language': 'en-US',
+        'sort_by': 'popularity.desc',
+        'include_adult': 'true',
+        'with_genres': genre_id
+    }
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+    return response.json()
+
+def get_random_movies(num_movies=2, genre_id=None):
+    if genre_id:
+        discovered_movies = discover_movies_by_genre(genre_id)
+        movies = discovered_movies['results']
+    else:
+        popular_movies = get_popular_movies()
+        movies = popular_movies['results']
+    
     random_movies = random.sample(movies, num_movies)
     return [get_movie_info(movie['id']) for movie in random_movies]
+
