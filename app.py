@@ -29,5 +29,9 @@ def vote():
     
     return redirect(url_for('compare'))
 
+@app.route('/skip', methods=['POST'])
+def skip():
+    return redirect(url_for('compare'))
+
 if __name__ == '__main__':
     app.run(debug=True)
