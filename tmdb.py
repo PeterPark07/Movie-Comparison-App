@@ -5,6 +5,30 @@ import random
 TMDB_API_KEY = os.getenv('TMDB_API_KEY')
 BASE_URL = 'https://api.themoviedb.org/3'
 
+# Genre list from TMDB API
+GENRES = [
+    {'id': 28, 'name': 'Action'}, 
+    {'id': 12, 'name': 'Adventure'}, 
+    {'id': 16, 'name': 'Animation'}, 
+    {'id': 35, 'name': 'Comedy'}, 
+    {'id': 80, 'name': 'Crime'}, 
+    {'id': 99, 'name': 'Documentary'}, 
+    {'id': 18, 'name': 'Drama'}, 
+    {'id': 10751, 'name': 'Family'}, 
+    {'id': 14, 'name': 'Fantasy'}, 
+    {'id': 36, 'name': 'History'}, 
+    {'id': 27, 'name': 'Horror'}, 
+    {'id': 10402, 'name': 'Music'}, 
+    {'id': 9648, 'name': 'Mystery'}, 
+    {'id': 10749, 'name': 'Romance'}, 
+    {'id': 878, 'name': 'Science Fiction'}, 
+    {'id': 10770, 'name': 'TV Movie'}, 
+    {'id': 53, 'name': 'Thriller'}, 
+    {'id': 10752, 'name': 'War'}, 
+    {'id': 37, 'name': 'Western'}
+]
+
+
 def get_configuration():
     url = f'{BASE_URL}/configuration'
     params = {
@@ -24,7 +48,8 @@ def get_movie_details(movie_id):
     response.raise_for_status()
     return response.json()
 
-def get_popular_movies(page=1):
+def get_popular_movies():
+    page = random.randint(1, 100)
     url = f'{BASE_URL}/movie/popular'
     params = {
         'api_key': TMDB_API_KEY,
@@ -68,9 +93,10 @@ def discover_movies_by_genre(genre_id):
     response.raise_for_status()
     return response.json()
 
-def get_random_movies(num_movies=2, genre_id=None):
-    if genre_id:
-        discovered_movies = discover_movies_by_genre(genre_id)
+def get_random_movies(num_movies=2):
+    if random.randint(0,1) == 0:
+        random_genre = random.choice(GENRES)
+        discovered_movies = discover_movies_by_genre((random_genre['id']))
         movies = discovered_movies['results']
     else:
         popular_movies = get_popular_movies()
