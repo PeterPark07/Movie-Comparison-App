@@ -17,26 +17,30 @@
         .movie img {
             width: 300px;
             height: auto;
+            cursor: pointer;
         }
     </style>
+    <script>
+        function submitForm(movieId) {
+            document.getElementById('vote-form-' + movieId).submit();
+        }
+    </script>
 </head>
 <body>
     <h1>Which Movie Do You Prefer?</h1>
     <div class="movie-container">
         <div class="movie">
             <h2>{{ movie1.title }}</h2>
-            <img src="{{ movie1.poster_path }}" alt="{{ movie1.title }}">
-            <form action="{{ url_for('vote') }}" method="post">
+            <img src="{{ movie1.poster_path }}" alt="{{ movie1.title }}" onclick="submitForm('{{ movie1.id }}')">
+            <form id="vote-form-{{ movie1.id }}" action="{{ url_for('vote') }}" method="post">
                 <input type="hidden" name="winner_id" value="{{ movie1.id }}">
-                <button type="submit">Vote for {{ movie1.title }}</button>
             </form>
         </div>
         <div class="movie">
             <h2>{{ movie2.title }}</h2>
-            <img src="{{ movie2.poster_path }}" alt="{{ movie2.title }}">
-            <form action="{{ url_for('vote') }}" method="post">
+            <img src="{{ movie2.poster_path }}" alt="{{ movie2.title }}" onclick="submitForm('{{ movie2.id }}')">
+            <form id="vote-form-{{ movie2.id }}" action="{{ url_for('vote') }}" method="post">
                 <input type="hidden" name="winner_id" value="{{ movie2.id }}">
-                <button type="submit">Vote for {{ movie2.title }}</button>
             </form>
         </div>
     </div>
