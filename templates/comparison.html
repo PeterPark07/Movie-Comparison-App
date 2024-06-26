@@ -16,6 +16,7 @@
         }
         .movie {
             text-align: center;
+            margin-bottom: 20px; /* Added margin to create space between movies */
         }
         .movie img {
             width: 300px;
@@ -49,11 +50,6 @@
 </head>
 <body>
     <h1>Which Movie Do You Prefer?</h1>
-    <div class="skip-button-container">
-        <form action="{{ url_for('skip') }}" method="post">
-            <button type="submit">Haven't Watched It</button>
-        </form>
-    </div>
     <div class="movie-container">
         <div class="movie">
             <h2>{{ movie1.title }}</h2>
@@ -62,6 +58,13 @@
                 <input type="hidden" name="winner_id" value="{{ movie1.id }}">
                 <input type="hidden" name="winner_title" value="{{ movie1.title }}">
             </form>
+        </div>
+        <div class="movie">
+            <div class="skip-button-container">
+                <form action="{{ url_for('skip') }}" method="post">
+                    <button type="submit">Haven't Watched It</button>
+                </form>
+            </div>
         </div>
         <div class="movie">
             <h2>{{ movie2.title }}</h2>
