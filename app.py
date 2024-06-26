@@ -17,10 +17,15 @@ def compare():
 @app.route('/vote', methods=['POST'])
 def vote():
     winner_id = request.form['winner_id']
+    winner_title = request.form['winner_title']
     
     # Update vote count for the winner in MongoDB
     # Try to find the movie by ID, if not found, create a new document
-    movie_collection.update_one({'id': winner_id}, {'$inc': {'votes': 1}}, upsert=True)
+    movie = movie_collection.find_one({'id': winner_id})
+    if movie:
+        movie_collection.update_one({'id': winner_id}, {'$inc': {'votes': 1}})
+    else:
+        movie_collection.insert_one({'id': winner_id, 'title': winner_title, 'votes': 1})
     
     return redirect(url_for('compare'))
 
