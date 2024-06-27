@@ -55,8 +55,28 @@ def vote():
         add_votes = non_winner_votes//2
         if add_votes == 0:
             add_votes = 2
+
+
         if movie:
-            movie_collection.update_one({'id': winner_id}, {'$inc': {'votes': add_votes}})
+            if 'genres' not in movie:
+                movie_collection.update_one(
+                    {'id': winner_id},
+                    {
+                        '$inc': {'votes': add_votes},
+                        '$set': {
+                            'popularity': movie_info.get('popularity'),
+                            'vote_average': movie_info.get('vote_average'),
+                            'genres': movie_info.get('genres'),
+                            'tagline': movie_info.get('tagline'),
+                            'imdb_id': movie_info.get('imdb_id')
+                        }
+                    }
+                )
+            else:
+                movie_collection.update_one(
+                    {'id': winner_id},
+                    {'$inc': {'votes': add_votes}}
+                )
         else:
             movie_collection.insert_one({
                 'id': winner_id,
