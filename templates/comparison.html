@@ -80,7 +80,6 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Replace the movie with new movie data
                     const movieContainer = document.getElementById('movie-' + movieId);
                     movieContainer.innerHTML = `
                         <h2>${data.movie.title}</h2>
@@ -94,11 +93,14 @@
                     `;
 
                     // Re-attach event listener to the "Haven't Watched It" button
-                    const havenSeenButton = movieContainer.querySelector('.haven't-seen-button');
+                    const havenSeenButton = movieContainer.querySelector('.haven\'t-seen-button');
                     havenSeenButton.addEventListener('click', () => {
                         skipMovie(data.movie.id, data.other_movie_id);
                     });
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
         }
     </script>
