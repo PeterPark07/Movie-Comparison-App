@@ -17,8 +17,9 @@ def index():
             }
         }
     ]).next()['totalVotes']
-    return render_template('index.html', movies=movies, total_votes=total_votes)
-
+    total_movies = movie_collection.count_documents({})
+    
+    return render_template('index.html', movies=movies, total_votes=total_votes, total_movies=total_movies)
 
 
 
