@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from tmdb import get_random_movies
+from tmdb import get_random_movies, get_movie_info
 from database import movie_info as movie_collection
 import os
 
