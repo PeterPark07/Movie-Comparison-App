@@ -56,6 +56,10 @@
         {% for movie in movies %}
         <div class="movie">
             <h3>{{ movie.title }}</h3>
+            <p>Tagline: {{ movie.tagline }}</p>
+            <p>Popularity: {{ movie.popularity }}</p>
+            <p>Vote Average: {{ movie.vote_average }}</p>
+            <p>Genres: {{ movie.genres | join(', ') }}</p>
             <p>Votes: {{ movie.votes }}</p>
         </div>
         {% endfor %}
