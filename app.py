@@ -25,7 +25,7 @@ def index():
 
 @app.route('/compare')
 def compare():
-    if random.randint(1, 3) != 1:
+    if random.randint(1, 2) == 1:
         local_movies = list(movie_collection.aggregate([{ '$sample': { 'size': 2 } }]))
         movie1 = get_movie_info(local_movies[0]['id'])
         movie2 = get_movie_info(local_movies[1]['id'])
