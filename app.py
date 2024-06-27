@@ -33,7 +33,9 @@ def compare():
         random_movies = get_random_movies()
         movie1 = random_movies[0]
         movie2 = random_movies[1]
-    
+
+    if movie1 == movie2:
+        return redirect(url_for('compare'))
     return render_template('comparison.html', movie1=movie1, movie2=movie2)
 
 
