@@ -16,7 +16,7 @@
         }
         .movie {
             text-align: center;
-            margin-bottom: 20px; /* Added margin to create space between movies */
+            margin-bottom: 20px;
         }
         .movie img {
             width: 300px;
@@ -47,12 +47,38 @@
             document.getElementById('vote-form-' + movieId).querySelector('[name="non_winner_id"]').value = nonWinnerId;
             document.getElementById('vote-form-' + movieId).submit();
         }
+
+        function skipMovie(movieId) {
+            fetch('/skip', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ movie_id: movieId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Replace the movie with new movie data
+                    document.getElementById('movie-' + movieId).innerHTML = `
+                        <h2>${data.movie.title}</h2>
+                        <img src="${data.movie.poster_path}" alt="${data.movie.title}" onclick="submitForm('${data.movie.id}', '${data.other_movie_id}')">
+                        <form id="vote-form-${data.movie.id}" action="{{ url_for('vote') }}" method="post">
+                            <input type="hidden" name="winner_id" value="${data.movie.id}">
+                            <input type="hidden" name="winner_title" value="${data.movie.title}">
+                            <input type="hidden" name="non_winner_id" value="">
+                        </form>
+                        <button onclick="skipMovie('${data.movie.id}')">Haven't Watched It</button>
+                    `;
+                }
+            });
+        }
     </script>
 </head>
 <body>
     <h1>Which Movie Do You Prefer?</h1>
     <div class="movie-container">
-        <div class="movie">
+        <div class="movie" id="movie-{{ movie1.id }}">
             <h2>{{ movie1.title }}</h2>
             <img src="{{ movie1.poster_path }}" alt="{{ movie1.title }}" onclick="submitForm('{{ movie1.id }}', '{{ movie2.id }}')">
             <form id="vote-form-{{ movie1.id }}" action="{{ url_for('vote') }}" method="post">
@@ -60,13 +86,9 @@
                 <input type="hidden" name="winner_title" value="{{ movie1.title }}">
                 <input type="hidden" name="non_winner_id" value="">
             </form>
+            <button onclick="skipMovie('{{ movie1.id }}')">Haven't Watched It</button>
         </div>
-        <div class="skip-button-container">
-            <form action="{{ url_for('skip') }}" method="post">
-                <button type="submit">Skip</button>
-            </form>
-        </div>
-        <div class="movie">
+        <div class="movie" id="movie-{{ movie2.id }}">
             <h2>{{ movie2.title }}</h2>
             <img src="{{ movie2.poster_path }}" alt="{{ movie2.title }}" onclick="submitForm('{{ movie2.id }}', '{{ movie1.id }}')">
             <form id="vote-form-{{ movie2.id }}" action="{{ url_for('vote') }}" method="post">
@@ -74,6 +96,7 @@
                 <input type="hidden" name="winner_title" value="{{ movie2.title }}">
                 <input type="hidden" name="non_winner_id" value="">
             </form>
+            <button onclick="skipMovie('{{ movie2.id }}')">Haven't Watched It</button>
         </div>
     </div>
 </body>
