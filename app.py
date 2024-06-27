@@ -48,6 +48,8 @@ def vote():
     # Update vote count for the winner in MongoDB
     movie = movie_collection.find_one({'id': winner_id})
     non_winner = movie_collection.find_one({'id': non_winner_id})
+
+    movie_info = get_movie_info(winner_id)
     if non_winner:
         non_winner_votes = non_winner.get('votes')
         add_votes = non_winner_votes//2
@@ -56,9 +58,27 @@ def vote():
         if movie:
             movie_collection.update_one({'id': winner_id}, {'$inc': {'votes': add_votes}})
         else:
-            movie_collection.insert_one({'id': winner_id, 'title': winner_title, 'votes': add_votes})
+            movie_collection.insert_one({
+                'id': winner_id,
+                'title': winner_title,
+                'votes': add_votes,
+                'popularity': movie_info.get('popularity'),
+                'vote_average': movie_info.get('vote_average'),
+                'genres': movie_info.get('genres'),
+                'tagline': movie_info.get('tagline')
+                'imdb_id':movie_info.get('imdb_id')
+            })
     else:
-        movie_collection.insert_one({'id': winner_id, 'title': winner_title, 'votes': 1})
+        movie_collection.insert_one({
+            'id': winner_id,
+            'title': winner_title,
+            'votes': 1,
+            'popularity': movie_info.get('popularity'),
+            'vote_average': movie_info.get('vote_average'),
+            'genres': movie_info.get('genres'),
+            'tagline': movie_info.get('tagline')
+            'imdb_id':movie_info.get('imdb_id')
+        })
 
     return redirect(url_for('compare'))
 
