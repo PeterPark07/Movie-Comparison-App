@@ -8,7 +8,19 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     movies = movie_collection.find().sort('votes', -1)
-    return render_template('index.html', movies=movies)
+    total_votes = movie_collection.aggregate([
+        {
+            '$group': {
+                '_id': None,
+                'totalVotes': {'$sum': '$votes'}
+            }
+        }
+    ]).next()['totalVotes']
+    return render_template('index.html', movies=movies, total_votes=total_votes)
+
+
+
+
 
 @app.route('/compare')
 def compare():
