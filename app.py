@@ -45,7 +45,7 @@ def compare():
                 movie1 = get_movie_info(local_movie['id'])
                 movie2 = get_movie_info(matching_genre_movies[0]['id'])
 
-                return render_template('comparison.html', movie1=movie1, movie2=movie2, source='database')
+                return render_template('comparison.html', movie1=movie1, movie2=movie2)
 
     # Fallback to fetching random movies if genre-based selection fails
     random_movies = get_random_movies()
@@ -54,7 +54,7 @@ def compare():
 
     if movie1 == movie2:
         return redirect(url_for('compare'))
-    return render_template('comparison.html', movie1=movie1, movie2=movie2, source='random')
+    return render_template('comparison.html', movie1=movie1, movie2=movie2)
 
 
 @app.route('/vote', methods=['POST'])
