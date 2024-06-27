@@ -11,13 +11,16 @@
         .movie-container {
             display: flex;
             justify-content: space-around;
-            align-items: center;
+            align-items: flex-start; /* Adjust alignment */
             margin-top: 20px;
         }
         .movie {
             text-align: center;
             margin-bottom: 20px;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .movie img {
             width: 300px;
@@ -26,8 +29,9 @@
         }
         .skip-button-container {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: flex-start; /* Adjust alignment */
             margin: 20px 0;
         }
         .skip-button-container button {
@@ -38,22 +42,36 @@
             color: white;
             border-radius: 5px;
             cursor: pointer;
+            margin-bottom: 10px; /* Adjust spacing */
         }
         .skip-button-container button:hover {
             background-color: #5a6268; /* Darker shade on hover */
         }
-        .haven't-seen-button {
-            position: absolute;
-            top: 70%; /* Adjusted position */
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 10px 20px;
+        .movie-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: 20px; /* Adjust spacing between movies and buttons */
+        }
+        .movie-buttons button {
+            padding: 15px 30px; /* Smaller padding for smaller buttons */
             font-size: 16px; /* Smaller font size */
-            border: none;
-            background-color: #6c757d; /* Dull grey color */
-            color: white;
             border-radius: 5px;
             cursor: pointer;
+        }
+        .movie-buttons button.large {
+            padding: 20px 40px; /* Larger padding for larger button */
+            font-size: 18px; /* Larger font size */
+        }
+        .haven't-seen-button {
+            padding: 10px 20px;
+            font-size: 16px; /* Smaller font size */
+            background-color: #6c757d; /* Dull grey color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px; /* Adjust spacing */
         }
         .haven't-seen-button:hover {
             background-color: #5a6268; /* Darker shade on hover */
@@ -81,8 +99,7 @@
             .then(data => {
                 if (data.success) {
                     // Replace the movie with new movie data
-                    const movieContainer = document.getElementById('movie-' + movieId);
-                    movieContainer.innerHTML = `
+                    document.getElementById('movie-' + movieId).innerHTML = `
                         <h2>${data.movie.title}</h2>
                         <img src="${data.movie.poster_path}" alt="${data.movie.title}" onclick="submitForm('${data.movie.id}', '${data.other_movie_id}')">
                         <form id="vote-form-${data.movie.id}" action="{{ url_for('vote') }}" method="post">
@@ -92,12 +109,6 @@
                         </form>
                         <button class="haven't-seen-button" onclick="skipMovie('${data.movie.id}', '${data.other_movie_id}')">Haven't Watched It</button>
                     `;
-
-                    // Re-attach event listener to the "Haven't Watched It" button
-                    const havenSeenButton = movieContainer.querySelector('.haven't-seen-button');
-                    havenSeenButton.addEventListener('click', () => {
-                        skipMovie(data.movie.id, data.other_movie_id);
-                    });
                 }
             });
         }
@@ -114,10 +125,12 @@
                 <input type="hidden" name="winner_title" value="{{ movie1.title }}">
                 <input type="hidden" name="non_winner_id" value="">
             </form>
-            <button class="haven't-seen-button" onclick="skipMovie('{{ movie1.id }}', '{{ movie2.id }}')">Haven't Watched It</button>
+            <div class="movie-buttons">
+                <button class="haven't-seen-button" onclick="skipMovie('{{ movie1.id }}', '{{ movie2.id }}')">Haven't Watched It</button>
+            </div>
         </div>
         <div class="skip-button-container">
-            <button onclick="skipMovies()">Skip</button>
+            <button class="large" onclick="skipMovies()">SKIP</button>
         </div>
         <div class="movie" id="movie-{{ movie2.id }}">
             <h2>{{ movie2.title }}</h2>
@@ -127,7 +140,9 @@
                 <input type="hidden" name="winner_title" value="{{ movie2.title }}">
                 <input type="hidden" name="non_winner_id" value="">
             </form>
-            <button class="haven't-seen-button" onclick="skipMovie('{{ movie2.id }}', '{{ movie1.id }}')">Haven't Watched It</button>
+            <div class="movie-buttons">
+                <button class="haven't-seen-button" onclick="skipMovie('{{ movie2.id }}', '{{ movie1.id }}')">Haven't Watched It</button>
+            </div>
         </div>
     </div>
 </body>
