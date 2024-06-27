@@ -95,12 +95,14 @@ def discover_movies_by_genre(genre_id, page=1):
     return response.json()
 
 def get_random_movies(num_movies=2):
-    
     random_genre = random.choice(GENRES)
-    discovered_movies = discover_movies_by_genre((random_genre['id']))
-    movies = discovered_movies['results']
-    print(movies)
+    genre_id = random_genre['id']
     
-    random_movies = random.sample(movies, num_movies)
+    all_movies = []
+    for page in range(1, 3):  # Fetch first two pages
+        movies = discover_movies_by_genre(genre_id, page)
+        all_movies.extend(movies['results'])
+    print(len(all_movies))
+    
+    random_movies = random.sample(all_movies, num_movies)
     return [get_movie_info(movie['id']) for movie in random_movies]
-
