@@ -63,7 +63,7 @@ def get_popular_movies():
 def get_movie_info(movie_id):
     config = get_configuration()
     image_base_url = config['images']['secure_base_url']
-    poster_size = 'original'
+    poster_size = 'w500'
 
     movie_details = get_movie_details(movie_id)
     movie_info = {
