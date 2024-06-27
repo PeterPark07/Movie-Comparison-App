@@ -49,15 +49,16 @@
         }
         .movie-buttons {
             display: flex;
-            flex-direction: column;
+            flex-direction: row; /* Arrange buttons horizontally */
             align-items: center;
-            margin-left: 20px; /* Adjust spacing between movies and buttons */
+            margin-top: 10px; /* Adjust spacing */
         }
         .movie-buttons button {
             padding: 15px 30px; /* Smaller padding for smaller buttons */
             font-size: 16px; /* Smaller font size */
             border-radius: 5px;
             cursor: pointer;
+            margin: 0 5px; /* Adjust spacing between buttons */
         }
         .movie-buttons button.large {
             padding: 20px 40px; /* Larger padding for larger button */
@@ -71,7 +72,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-bottom: 10px; /* Adjust spacing */
+            margin: 0 5px; /* Adjust spacing */
         }
         .haven't-seen-button:hover {
             background-color: #5a6268; /* Darker shade on hover */
@@ -107,7 +108,9 @@
                             <input type="hidden" name="winner_title" value="${data.movie.title}">
                             <input type="hidden" name="non_winner_id" value="">
                         </form>
-                        <button class="haven't-seen-button" onclick="skipMovie('${data.movie.id}', '${data.other_movie_id}')">Haven't Watched It</button>
+                        <div class="movie-buttons">
+                            <button class="haven't-seen-button" onclick="skipMovie('${data.movie.id}', '${data.other_movie_id}')">Haven't Watched It</button>
+                        </div>
                     `;
                 }
             });
