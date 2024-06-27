@@ -12,7 +12,7 @@
         h1, h2 {
             text-align: center;
         }
-        .total-votes {
+        .totals {
             text-align: center;
             margin-bottom: 20px;
         }
@@ -46,7 +46,8 @@
 </head>
 <body>
     <h1>Top Voted Movies</h1>
-    <div class="total-votes">
+    <div class="totals">
+        <h2>Total Movies: {{ total_movies }}</h2>
         <h2>Total Votes: {{ total_votes }}</h2>
     </div>
 
