@@ -101,7 +101,6 @@ def get_random_movies(num_movies=2):
     all_movies = []
     movies = discover_movies_by_genre(genre_id, random.randint(1,10))
     all_movies.extend(movies['results'])
-    print(len(all_movies))
     
     random_movies = random.sample(all_movies, num_movies)
     return [get_movie_info(movie['id']) for movie in random_movies]
