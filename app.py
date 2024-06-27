@@ -40,7 +40,7 @@ def vote():
         non_winner_votes = non_winner.get('votes')
         add_votes = non_winner_votes//2
         if add_votes == 0:
-            add_votes = 1
+            add_votes = 2
         if movie:
             movie_collection.update_one({'id': winner_id}, {'$inc': {'votes': add_votes}})
         else:
