@@ -98,7 +98,7 @@ def get_random_movies(num_movies=2):
     random_genre = random.choice(GENRES)
     discovered_movies = discover_movies_by_genre((random_genre['id']))
     movies = discovered_movies['results']
-    print(len(movies))
+    print(movies)
     
     random_movies = random.sample(movies, num_movies)
     return [get_movie_info(movie['id']) for movie in random_movies]
