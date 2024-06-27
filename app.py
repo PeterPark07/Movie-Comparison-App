@@ -127,7 +127,29 @@ def vote():
 
 @app.route('/skip', methods=['POST'])
 def skip():
-    return redirect(url_for('compare'))
+    data = request.get_json()
+    movie_id_to_replace = data['movie_id']
+
+    # Get the current movies being compared
+    movie1 = get_movie_info(movie_id_to_replace)
+    movie2 = None
+    if 'movie2_id' in data:
+        movie2 = get_movie_info(data['movie2_id'])
+
+    # Get a new random movie to replace the one the user hasn't watched
+    new_movie = None
+    while new_movie is None or new_movie['id'] == movie_id_to_replace:
+        new_movie = get_random_movies(1)[0]
+
+    # Prepare response data
+    response_data = {
+        'success': True,
+        'movie': new_movie,
+        'other_movie_id': movie2['id'] if movie2 else None
+    }
+
+    return jsonify(response_data)
+
 
 @app.route('/duplicates')
 def cleanup_duplicates():
