@@ -99,9 +99,8 @@ def get_random_movies(num_movies=2):
     genre_id = random_genre['id']
     
     all_movies = []
-    for page in range(1, 3):  # Fetch first two pages
-        movies = discover_movies_by_genre(genre_id, page)
-        all_movies.extend(movies['results'])
+    movies = discover_movies_by_genre(genre_id, random.randint(1,10))
+    all_movies.extend(movies['results'])
     print(len(all_movies))
     
     random_movies = random.sample(all_movies, num_movies)
