@@ -32,14 +32,20 @@
         .skip-button-container button {
             padding: 10px 20px;
             font-size: 18px;
-            background-color: #007bff;
-            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
+        .skip-button-container .database-movies button {
+            background-color: green;
+            color: white;
+        }
+        .skip-button-container .random-movies button {
+            background-color: blue;
+            color: white;
+        }
         .skip-button-container button:hover {
-            background-color: #0056b3;
+            opacity: 0.8;
         }
     </style>
     <script>
@@ -61,7 +67,7 @@
                 <input type="hidden" name="non_winner_id" value="">
             </form>
         </div>
-        <div class="skip-button-container">
+        <div class="skip-button-container {{ source }}">
             <form action="{{ url_for('skip') }}" method="post">
                 <button type="submit">Haven't Watched It</button>
             </form>
