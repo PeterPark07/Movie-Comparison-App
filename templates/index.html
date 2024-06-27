@@ -27,6 +27,10 @@
         .movie h3 {
             margin-top: 0;
         }
+        .movie-details {
+            display: none; /* Initially hide details */
+            margin-top: 10px;
+        }
         .compare-link {
             display: block;
             text-align: center;
@@ -43,6 +47,12 @@
             background-color: #0056b3;
         }
     </style>
+    <script>
+        function toggleDetails(movieId) {
+            var details = document.getElementById('details-' + movieId);
+            details.style.display = details.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
 </head>
 <body>
     <h1>Top Voted Movies</h1>
@@ -56,11 +66,14 @@
         {% for movie in movies %}
         <div class="movie">
             <h3>{{ movie.title }}</h3>
-            <p>Popularity: {{ movie.popularity }}</p>
-            <p>Vote Average: {{ movie.vote_average }}</p>
-            <p>Genres: {{ movie.genres | join(', ') }}</p>
-            <p>Tagline: {{ movie.tagline }}</p>
             <p>Votes: {{ movie.votes }}</p>
+            <button onclick="toggleDetails('{{ movie.id }}')">More</button>
+            <div id="details-{{ movie.id }}" class="movie-details">
+                <p>Popularity: {{ movie.popularity }}</p>
+                <p>Vote Average: {{ movie.vote_average }}</p>
+                <p>Genres: {{ movie.genres | join(', ') }}</p>
+                <p>Tagline: {{ movie.tagline }}</p>
+            </div>
         </div>
         {% endfor %}
     </div>
