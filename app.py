@@ -65,7 +65,7 @@ def vote():
                 'popularity': movie_info.get('popularity'),
                 'vote_average': movie_info.get('vote_average'),
                 'genres': movie_info.get('genres'),
-                'tagline': movie_info.get('tagline')
+                'tagline': movie_info.get('tagline'),
                 'imdb_id':movie_info.get('imdb_id')
             })
     else:
@@ -76,7 +76,7 @@ def vote():
             'popularity': movie_info.get('popularity'),
             'vote_average': movie_info.get('vote_average'),
             'genres': movie_info.get('genres'),
-            'tagline': movie_info.get('tagline')
+            'tagline': movie_info.get('tagline'),
             'imdb_id':movie_info.get('imdb_id')
         })
 
