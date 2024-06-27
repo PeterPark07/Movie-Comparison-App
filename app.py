@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from tmdb import get_random_movies, get_movie_info
 from database import movie_info as movie_collection
 import os
+import random 
 
 app = Flask(__name__)
 
@@ -21,11 +22,19 @@ def index():
 
 
 
-
 @app.route('/compare')
 def compare():
-    random_movies = get_random_movies()
-    return render_template('comparison.html', movie1=random_movies[0], movie2=random_movies[1])
+    if random.randint(1, 3) == 1:
+        local_movies = list(movie_collection.aggregate([{ '$sample': { 'size': 2 } }]))
+        movie1 = get_movie_info(local_movies[0]['id'])
+        movie2 = get_movie_info(local_movies[1]['id'])
+    else:
+        random_movies = get_random_movies()
+        movie1 = random_movies[0]
+        movie2 = random_movies[1]
+    
+    return render_template('comparison.html', movie1=movie1, movie2=movie2)
+
 
 @app.route('/vote', methods=['POST'])
 def vote():
