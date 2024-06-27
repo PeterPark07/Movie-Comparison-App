@@ -43,7 +43,8 @@
         }
     </style>
     <script>
-        function submitForm(movieId) {
+        function submitForm(movieId, nonWinnerId) {
+            document.getElementById('vote-form-' + movieId).querySelector('[name="non_winner_id"]').value = nonWinnerId;
             document.getElementById('vote-form-' + movieId).submit();
         }
     </script>
@@ -53,25 +54,25 @@
     <div class="movie-container">
         <div class="movie">
             <h2>{{ movie1.title }}</h2>
-            <img src="{{ movie1.poster_path }}" alt="{{ movie1.title }}" onclick="submitForm('{{ movie1.id }}')">
+            <img src="{{ movie1.poster_path }}" alt="{{ movie1.title }}" onclick="submitForm('{{ movie1.id }}', '{{ movie2.id }}')">
             <form id="vote-form-{{ movie1.id }}" action="{{ url_for('vote') }}" method="post">
                 <input type="hidden" name="winner_id" value="{{ movie1.id }}">
                 <input type="hidden" name="winner_title" value="{{ movie1.title }}">
+                <input type="hidden" name="non_winner_id" value="">
+            </form>
+        </div>
+        <div class="skip-button-container">
+            <form action="{{ url_for('skip') }}" method="post">
+                <button type="submit">Haven't Watched It</button>
             </form>
         </div>
         <div class="movie">
-            <div class="skip-button-container">
-                <form action="{{ url_for('skip') }}" method="post">
-                    <button type="submit">Haven't Watched It</button>
-                </form>
-            </div>
-        </div>
-        <div class="movie">
             <h2>{{ movie2.title }}</h2>
-            <img src="{{ movie2.poster_path }}" alt="{{ movie2.title }}" onclick="submitForm('{{ movie2.id }}')">
+            <img src="{{ movie2.poster_path }}" alt="{{ movie2.title }}" onclick="submitForm('{{ movie2.id }}', '{{ movie1.id }}')">
             <form id="vote-form-{{ movie2.id }}" action="{{ url_for('vote') }}" method="post">
                 <input type="hidden" name="winner_id" value="{{ movie2.id }}">
                 <input type="hidden" name="winner_title" value="{{ movie2.title }}">
+                <input type="hidden" name="non_winner_id" value="">
             </form>
         </div>
     </div>
