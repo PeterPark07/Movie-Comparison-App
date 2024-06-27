@@ -24,7 +24,7 @@ def index():
 
 @app.route('/compare')
 def compare():
-    if random.randint(1, 2) == 1:
+    if random.randint(1, 4) == 1:
         # Fetch a random movie with genres from the database
         local_movie = list(movie_collection.aggregate([
             { '$match': { 'genres': { '$exists': True, '$ne': [] } } },
@@ -46,12 +46,17 @@ def compare():
                 movie2 = get_movie_info(matching_genre_movies[0]['id'])
 
                 return render_template('comparison.html', movie1=movie1, movie2=movie2)
-
-    # Fallback to fetching random movies if genre-based selection fails
-    random_movies = get_random_movies()
-    movie1 = random_movies[0]
-    movie2 = random_movies[1]
-
+    elif random.randint(1,2) == 2:
+        local_movies = list(movie_collection.aggregate([{ '$sample': { 'size': 2 } }]))
+        movie1 = get_movie_info(local_movies[0]['id'])
+        movie2 = get_movie_info(local_movies[1]['id'])
+        
+    else:
+        # Fallback to fetching random movies if genre-based selection fails
+        random_movies = get_random_movies()
+        movie1 = random_movies[0]
+        movie2 = random_movies[1]
+    
     if movie1 == movie2:
         return redirect(url_for('compare'))
     return render_template('comparison.html', movie1=movie1, movie2=movie2)
