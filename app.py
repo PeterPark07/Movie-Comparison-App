@@ -129,5 +129,41 @@ def vote():
 def skip():
     return redirect(url_for('compare'))
 
+@app.route('/duplicates')
+def cleanup_duplicates():
+    # Aggregate movies by id and title to find duplicates
+    pipeline = [
+        {
+            '$group': {
+                '_id': {
+                    'id': '$id',
+                    'title': '$title'
+                },
+                'count': {'$sum': 1},
+                'docs': {'$push': '$$ROOT'}
+            }
+        },
+        {
+            '$match': {
+                'count': {'$gt': 1}
+            }
+        }
+    ]
+    
+    duplicates = list(movie_collection.aggregate(pipeline))
+    
+    for duplicate in duplicates:
+        movies = duplicate['docs']
+        # Sort movies by votes in descending order
+        movies.sort(key=lambda x: x['votes'], reverse=True)
+        # Keep the movie with the highest votes
+        movie_to_keep = movies[0]
+        # Remove all other duplicates
+        for movie in movies[1:]:
+            movie_collection.delete_one({'_id': movie['_id']})
+    
+    return redirect(url_for('index'))
+
+
 if __name__ == '__main__':
     app.run(debug=True)
