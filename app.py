@@ -24,7 +24,7 @@ def vote():
     # Update vote count for the winner in MongoDB
     movie = movie_collection.find_one({'id': winner_id})
     non_winner = movie_collection.find_one({'id': non_winner_id})
-    if non winner:
+    if non_winner:
         non_winner_votes = non_winner.get('votes')
         add_votes = non_winner_votes//2
         if add_votes == 0:
