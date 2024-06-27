@@ -80,14 +80,15 @@ def get_movie_info(movie_id):
     }
     return movie_info
 
-def discover_movies_by_genre(genre_id):
+def discover_movies_by_genre(genre_id, page=1):
     url = f'{BASE_URL}/discover/movie'
     params = {
         'api_key': TMDB_API_KEY,
         'language': 'en-US',
         'sort_by': 'popularity.desc',
         'include_adult': 'true',
-        'with_genres': genre_id
+        'with_genres': genre_id,
+        'page': page
     }
     response = requests.get(url, params=params)
     response.raise_for_status()
