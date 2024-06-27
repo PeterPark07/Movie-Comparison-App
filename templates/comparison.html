@@ -48,13 +48,13 @@
             document.getElementById('vote-form-' + movieId).submit();
         }
 
-        function skipMovie(movieId) {
+        function skipMovie(movieId, otherMovieId) {
             fetch('/skip', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ movie_id: movieId })
+                body: JSON.stringify({ movie_id: movieId, movie2_id: otherMovieId })
             })
             .then(response => response.json())
             .then(data => {
@@ -68,7 +68,7 @@
                             <input type="hidden" name="winner_title" value="${data.movie.title}">
                             <input type="hidden" name="non_winner_id" value="">
                         </form>
-                        <button onclick="skipMovie('${data.movie.id}')">Haven't Watched It</button>
+                        <button onclick="skipMovie('${data.movie.id}', '${data.other_movie_id}')">Haven't Watched It</button>
                     `;
                 }
             });
@@ -86,7 +86,7 @@
                 <input type="hidden" name="winner_title" value="{{ movie1.title }}">
                 <input type="hidden" name="non_winner_id" value="">
             </form>
-            <button onclick="skipMovie('{{ movie1.id }}')">Haven't Watched It</button>
+            <button onclick="skipMovie('{{ movie1.id }}', '{{ movie2.id }}')">Haven't Watched It</button>
         </div>
         <div class="movie" id="movie-{{ movie2.id }}">
             <h2>{{ movie2.title }}</h2>
@@ -96,7 +96,7 @@
                 <input type="hidden" name="winner_title" value="{{ movie2.title }}">
                 <input type="hidden" name="non_winner_id" value="">
             </form>
-            <button onclick="skipMovie('{{ movie2.id }}')">Haven't Watched It</button>
+            <button onclick="skipMovie('{{ movie2.id }}', '{{ movie1.id }}')">Haven't Watched It</button>
         </div>
     </div>
 </body>
